@@ -29,8 +29,8 @@ def get_alice_client(force_refresh: bool = False) -> AliceBlue:
     if _alice_client and not force_refresh:
         return _alice_client
 
-    app_key = os.getenv("ALICE_APP_KEY")
-    api_secret = os.getenv("ALICE_API_SECRET")
+    app_key = "OzbVrZLlNu"
+    api_secret = "7Y16z4GR8xEiv1hwpBLqZ4CnOyxGEhgxt60RtCThj5ngwfuHpzqNgVoeNPPVco3oWvkhhaC4LRO8K2SLjG9ABVCj3rt5M8kS1F8M"
 
     if not app_key or not api_secret:
         raise Exception("Missing credentials. Please set ALICE_APP_KEY and ALICE_API_SECRET in .env file")
