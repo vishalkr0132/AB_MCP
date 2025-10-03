@@ -360,7 +360,7 @@ class AliceBlue:
         res = requests.get(url, headers=self.headers)
         
         if res.status_code != 200:
-            raise Exception(f"Trade Book Error {res.status_code}: {res.text}")
+            raise Exception(f"Order Cancel Error {res.status_code}: {res.text}")
         try:
             return res.json()
         except Exception:
@@ -384,7 +384,7 @@ class AliceBlue:
         res = requests.post(url, headers=self.headers, json=payload)
         
         if res.status_code != 200:
-            raise Exception(f"Order Margin Error {res.status_code}: {res.text}")
+            raise Exception(f"Order Cancel Error {res.status_code}: {res.text}")
         try:
             return res.json()
         except Exception:
@@ -506,7 +506,7 @@ class AliceBlue:
         res = requests.get(url, headers=self.headers)
         
         if res.status_code != 200:
-            raise Exception(f"Limits Error {res.status_code}: {res.text}")   
+            raise Exception(f"Exit Bracket Order Error {res.status_code}: {res.text}")   
         try:
             return res.json()
         except Exception:
@@ -516,3 +516,4 @@ if __name__ == "__main__":
     alice = AliceBlue(app_key, api_secret)
     alice.authenticate()
     print("User Session:", alice.get_session())
+    
