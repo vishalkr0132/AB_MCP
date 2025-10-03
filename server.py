@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 mcp = FastMCP(
-    name="New AliceBlue Portfolio Agent",
+    name="AliceBlue Portfolio Agent",
     dependencies=["python-dotenv", "requests"]
 )
 _alice_client = None
@@ -29,8 +29,8 @@ def get_alice_client(force_refresh: bool = False) -> AliceBlue:
     if _alice_client and not force_refresh:
         return _alice_client
 
-    app_key = "OzbVrZLlNu"
-    api_secret = "7Y16z4GR8xEiv1hwpBLqZ4CnOyxGEhgxt60RtCThj5ngwfuHpzqNgVoeNPPVco3oWvkhhaC4LRO8K2SLjG9ABVCj3rt5M8kS1F8M"
+    app_key = os.getenv("ALICE_APP_KEY")
+    api_secret = os.getenv("ALICE_API_SECRET")
 
     if not app_key or not api_secret:
         raise Exception("Missing credentials. Please set ALICE_APP_KEY and ALICE_API_SECRET in .env file")
@@ -346,7 +346,7 @@ def get_place_gtt_order(tradingSymbol: str, exchange: str, transactionType: str,
         return {"status": "error", "message": str(e)}
 
 @mcp.tool()
-def get_gtt_order_book(self):
+def get_gtt_order_book()-> dict:
     """Fetches GTT Order Book"""
     try:
         alice = get_alice_client()
@@ -386,8 +386,8 @@ def get_modify_gtt_order(brokerOrderId: str, instrumentId: str, tradingSymbol: s
         return {"status": "error", "message": str(e)}
 
 @mcp.tool()
-def get_cancel_gtt_order(brokerOrderId: str):
-    """Cancel Order"""
+def get_cancel_gtt_order(brokerOrderId: str) -> dict:
+    """Cancel GTT Order"""
     try:
         alice = get_alice_client()
         return{
@@ -400,7 +400,7 @@ def get_cancel_gtt_order(brokerOrderId: str):
         return {"status": "error", "message": str(e)}
 
 @mcp.tool()
-def get_limits():
+def get_limits() -> dict:
     """Get Limits"""
     try:
         alice = get_alice_client()
@@ -410,16 +410,8 @@ def get_limits():
         }
     except Exception as e:
         return {"status": "error", "message": str(e)}
-    
-if __name__ == "__main__":
-    app_key = os.getenv("ALICE_APP_KEY")
-    api_secret = os.getenv("ALICE_API_SECRET")
-    if not app_key or not api_secret:
-        raise Exception("Missing credentials. Please set ALICE_APP_KEY and ALICE_API_SECRET in .env file")
-    if not AliceBlue(app_key, api_secret)._is_port_available(8080):
-        print(f"Port 8080 is busy. Attempting to free it...")
-        kill_port_process(8080)
-        time.sleep(2)
-    port = get_free_port()
-    mcp.run(transport="sse", host="127.0.0.1", port=port)
 
+# Vercel serverless function handler
+def handler(request):
+    """Vercel serverless function handler"""
+    return mcp.handle_request(request)

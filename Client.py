@@ -17,8 +17,9 @@ LOGIN_URL = "https://ant.aliceblueonline.com/?appcode="
 REDIRECT_PORT = 8080
 LOGIN_TIMEOUT = 60 
 
-app_key = "OzbVrZLlNu"
-api_secret = "7Y16z4GR8xEiv1hwpBLqZ4CnOyxGEhgxt60RtCThj5ngwfuHpzqNgVoeNPPVco3oWvkhhaC4LRO8K2SLjG9ABVCj3rt5M8kS1F8M"
+user_id = os.getenv("ALICE_USER_ID")
+app_key = os.getenv("ALICE_APP_KEY")
+api_secret = os.getenv("ALICE_API_SECRET")
 
 class RedirectHandler(http.server.SimpleHTTPRequestHandler):
     """Handles redirect response to capture authCode and userId."""
@@ -359,7 +360,7 @@ class AliceBlue:
         res = requests.get(url, headers=self.headers)
         
         if res.status_code != 200:
-            raise Exception(f"Order Cancel Error {res.status_code}: {res.text}")
+            raise Exception(f"Trade Book Error {res.status_code}: {res.text}")
         try:
             return res.json()
         except Exception:
@@ -383,7 +384,7 @@ class AliceBlue:
         res = requests.post(url, headers=self.headers, json=payload)
         
         if res.status_code != 200:
-            raise Exception(f"Order Cancel Error {res.status_code}: {res.text}")
+            raise Exception(f"Order Margin Error {res.status_code}: {res.text}")
         try:
             return res.json()
         except Exception:
@@ -505,7 +506,7 @@ class AliceBlue:
         res = requests.get(url, headers=self.headers)
         
         if res.status_code != 200:
-            raise Exception(f"Exit Bracket Order Error {res.status_code}: {res.text}")   
+            raise Exception(f"Limits Error {res.status_code}: {res.text}")   
         try:
             return res.json()
         except Exception:
@@ -515,4 +516,3 @@ if __name__ == "__main__":
     alice = AliceBlue(app_key, api_secret)
     alice.authenticate()
     print("User Session:", alice.get_session())
-    
