@@ -17,9 +17,8 @@ LOGIN_URL = "https://ant.aliceblueonline.com/?appcode="
 REDIRECT_PORT = 8080
 LOGIN_TIMEOUT = 60 
 
-user_id = os.getenv("ALICE_USER_ID")
-app_key = os.getenv("ALICE_APP_KEY")
-api_secret = os.getenv("ALICE_API_SECRET")
+app_key = "OzbVrZLlNu"
+api_secret = "7Y16z4GR8xEiv1hwpBLqZ4CnOyxGEhgxt60RtCThj5ngwfuHpzqNgVoeNPPVco3oWvkhhaC4LRO8K2SLjG9ABVCj3rt5M8kS1F8M"
 
 class RedirectHandler(http.server.SimpleHTTPRequestHandler):
     """Handles redirect response to capture authCode and userId."""
